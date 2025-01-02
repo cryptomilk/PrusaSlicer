@@ -49,8 +49,13 @@ static void getNamedSolids(const TopLoc_Location& location, const Handle(XCAFDoc
 
     std::string name;
     Handle(TDataStd_Name) shapeName;
-    if (referredLabel.FindAttribute(TDataStd_Name::GetID(), shapeName))
-        name = TCollection_AsciiString(shapeName->Get()).ToCString();
+    if (referredLabel.FindAttribute(TDataStd_Name::GetID(), shapeName)) {
+        TCollection_ExtendedString extstr = shapeName->Get();
+        char *str = new char[extstr.LengthOfCString() + 1];
+        extstr.ToUTF8CString(str);
+        name = str;
+        delete[] str;
+    }
 
     TopLoc_Location localLocation = location * shapeTool->GetLocation(label);
     TDF_LabelSequence components;
