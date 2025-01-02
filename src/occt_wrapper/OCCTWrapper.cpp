@@ -60,15 +60,19 @@ static void getNamedSolids(const TopLoc_Location& location, const Handle(XCAFDoc
         }
     } else {
         TopoDS_Shape shape;
+        TopExp_Explorer explorer;
         shapeTool->GetShape(referredLabel, shape);
         TopAbs_ShapeEnum shape_type = shape.ShapeType();
+        size_t i = 0;
         BRepBuilderAPI_Transform transform(shape, localLocation, Standard_True);
         switch (shape_type) {
         case TopAbs_COMPOUND:
-            namedSolids.emplace_back(TopoDS::Compound(transform.Shape()), name);
-            break;
         case TopAbs_COMPSOLID:
-            namedSolids.emplace_back(TopoDS::CompSolid(transform.Shape()), name);
+            for (explorer.Init(transform.Shape(), TopAbs_SOLID); explorer.More(); explorer.Next()) {
+                i++;
+                const TopoDS_Shape& currentShape = explorer.Current();
+                namedSolids.emplace_back(TopoDS::Solid(currentShape), name + "-SOLID-" + std::to_string(i));
+            }
             break;
         case TopAbs_SOLID:
             namedSolids.emplace_back(TopoDS::Solid(transform.Shape()), name);
