@@ -25,7 +25,7 @@
 #include "libslic3r/Point.hpp"
 
 const double STEP_TRANS_CHORD_ERROR = 0.005;
-const double STEP_TRANS_ANGLE_RES = 1;
+const double STEP_TRANS_ANGLE_RES = 0.1;
 
 // const int LOAD_STEP_STAGE_READ_FILE          = 0;
 // const int LOAD_STEP_STAGE_GET_SOLID          = 1;
