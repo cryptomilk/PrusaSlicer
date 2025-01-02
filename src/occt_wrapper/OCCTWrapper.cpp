@@ -137,8 +137,8 @@ try {
         std::vector<Vec3f>      vertices;
         std::vector<stl_facet> &facets = res->volumes.back().facets;
         for (TopExp_Explorer anExpSF(namedSolid.solid, TopAbs_FACE); anExpSF.More(); anExpSF.Next()) {
-            const int aNodeOffset = int(vertices.size());
             const TopoDS_Shape& aFace = anExpSF.Current();
+            const size_t aNodeOffset = vertices.size();
             TopLoc_Location aLoc;
             Handle(Poly_Triangulation) aTriangulation = BRep_Tool::Triangulation(TopoDS::Face(aFace), aLoc);
             if (aTriangulation.IsNull())
